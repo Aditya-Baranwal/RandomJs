@@ -118,16 +118,70 @@ class LinkedList {
         console.log(...allNodes);
     }
 
-    midPoint() {
+    midPoint(list = this.head) {
         
+        if(list === null) {
+            console.log("list is Empty");
+            return;
+        }
+                
+        let n1 = list, n2 = list;
+
+        while(n2 && n2.next != null && n2.next.next != null) {
+            n2 = n2.next.next;
+            n1 = n1.next;
+        }
+
+        return n1; 
     }
 
-    merge() {
+    #merge(head1, head2) {
+
+        let temp1 = head1, temp2 = head2, sorted = null, current;
+
+        while(temp1 != null && temp2 != null) {            
+            if(temp1.value < temp2.value) {
+                if(sorted == null) {
+                    sorted = temp1;
+                } else {
+                    current.next = temp1;
+                }
+                current = temp1;
+                temp1 = temp1.next;
+            } else {
+                if(sorted == null) {
+                    sorted = temp2;
+                } else {
+                    current.next = temp2;
+                }
+                current = temp2;
+                temp2 = temp2.next;
+            }
+        }
+
+        if(temp1) current.next = temp1;
+
+        if(temp2) current.next = temp2;
+
+        return sorted;
 
     }
- 
+
+    #sortUtil(start) {        
+        if(start.next !== null) {
+            let mid = this.midPoint(start);
+            let temp = mid.next;
+            mid.next = null;
+            let right  = this.#sortUtil(start);
+            let left = this.#sortUtil(temp)
+            let sorted = this.#merge(right, left);
+            return sorted;
+        }
+        return start;
+    }
+    
     sort() {
-
+        this.head = this.#sortUtil(this.head);
     }
 
 }
