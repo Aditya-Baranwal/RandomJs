@@ -35,6 +35,10 @@ class Queue {
         console.log(value);
     }
 
+    size() {
+        return this.size;
+    }
+
     print() {
         console.log(...this.queue.filter(e => e !== undefined));
     }

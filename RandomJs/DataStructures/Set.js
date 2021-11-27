@@ -32,6 +32,10 @@ class Set {
         }
     }
 
+    size() {
+        return this.items.length;
+    }
+
 }
 
 module.exports = Set;
