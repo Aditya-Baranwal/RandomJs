@@ -134,6 +134,7 @@ class BinarySearchTree {
         }
     }
 
+    // bfs - breadth first search.
     #levelorder(node, result) {
         try {
             let q1 = [];
@@ -224,9 +225,11 @@ class BinarySearchTree {
         }
     }
 
+
+
     #bottomview() {
         try {
-
+            
         }catch(error) {
             throw(error)
         }
