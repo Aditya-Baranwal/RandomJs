@@ -3,7 +3,9 @@ let BinarySearchTreeNode = require('../DataStructures/Nodes/BinarySearchTreeNode
 class BinarySearchTree {
 
     constructor() {
-        this.head = null
+        this.head = null;
+        this.diameter = 0;
+        this.maxPathSum = 0;
     }
 
     insert(value) {
@@ -92,12 +94,14 @@ class BinarySearchTree {
                     this.#rightview(result);
                 break;
                 case 'topview' :
-                    this.#topview(result);
+                    result = this.#topview(result);
                 break;
+                case 'depthfirst' :
+                    this.#depthFirstSearch(this.head, [], result);
                 default : break;
             }
 
-            console.log(...result);
+            console.log(`${type}  -->>`, ...result);
 
         } catch(error) {
            throw(error); 
@@ -148,6 +152,18 @@ class BinarySearchTree {
                     if(temp.right) q1.push(temp.right);
                 }
             }
+        } catch(error) {
+            throw(error);
+        }
+    }
+    
+    #depthFirstSearch(node, nodeStack, result) {
+        try {
+            result.push(node.value);
+            nodeStack.push(node);
+            if(node.left) this.#depthFirstSearch(node.left, nodeStack, result);
+            if(node.right) this.#depthFirstSearch(node.right, nodeStack, result);
+            nodeStack.pop(node);
         } catch(error) {
             throw(error);
         }
@@ -218,14 +234,61 @@ class BinarySearchTree {
             } else {
                 result = [];
             }
+
+            return result;
             
-            console.log(result);
         }catch(error) {
             throw(error)
         }
     }
 
+    getHeight(node = this.head) {
+        try {
+            if(!node) return 0;
+            let leftHeight = 0, rightHeight = 0;
+            leftHeight = this.getHeight(node.left);
+            rightHeight = this.getHeight(node.right);
+            return 1 + Math.max(leftHeight, rightHeight);
+        } catch(error) {
+            throw(error);
+        }
+    }
 
+    // binary tree is balanced when
+    // for each node --> AbsDiffOf(leftHeight - rightHeight) < 1 
+    isBalanced(node = this.head) {
+        try {
+            if(!node) { return 0 };
+            let leftHeight = this.isBinaryTreeBalanced(node.left);
+            let rightHeight = this.isBinaryTreeBalanced(node.right);
+            if(lh == -1 || rh == -1 || Math.abs(lh - rh) > 1) return -1;
+            return (1 + Math.max(leftHeight, rightHeight));
+        } catch(error) {
+            throw(error);
+        }
+    }
+
+    // diameter for a node = leftHeight + rightHeight
+    getDiameter() {
+        try {
+            this.#getDiameterUtil(this.head);
+            return this.diameter;
+        } catch(error) {
+            throw(error);
+        }
+    }
+
+    #getDiameterUtil(node) {
+        try {
+            if(node == null) return 0;
+            let leftHeight = this.#getDiameterUtil(node.left);
+            let rightHeight = this.#getDiameterUtil(node.right);
+            this.diameter = Math.max(this.diameter, leftHeight + rightHeight);
+            return 1 + Math.max(leftHeight, rightHeight); 
+        } catch(error) {
+            throw(error);
+        }
+    }
 
     #bottomview() {
         try {
@@ -235,6 +298,29 @@ class BinarySearchTree {
         }
     }
 
+    findMaximumPathSum() {
+        this.#findMaximumPathSumUtil();
+        return this.maxPathSum;
+    }
+
+    #findMaximumPathSumUtil(node = this.head) {
+        try {
+            if(node == null) return 0;
+            let leftMaxPathSum = node.value + this.#findMaximumPathSumUtil(node.left);
+            let rightMaxPathSum = node.value + this.#findMaximumPathSumUtil(node.right);
+            this.maxPathSum = Math.max(
+                this.maxPathSum, 
+                leftMaxPathSum + rightMaxPathSum - node.value,
+                leftMaxPathSum,
+                rightMaxPathSum
+            );
+            return Math.max(leftMaxPathSum, rightMaxPathSum);
+        } catch(error) {
+            throw(error);
+        }
+    }
+
+    
 }
 
 module.exports = BinarySearchTree

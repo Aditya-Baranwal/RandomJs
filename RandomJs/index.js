@@ -17,5 +17,9 @@ let BinarySearchTree = require('../RandomJs/DataStructures/BinarySearchTree');
     l1.traverse("leftview");
     l1.traverse("rightview");
     l1.traverse("topview");
+    l1.traverse("depthfirst");
+    console.log(l1.getHeight());
+    console.log(l1.getDiameter());
+    console.log(l1.findMaximumPathSum());
 
 })();
