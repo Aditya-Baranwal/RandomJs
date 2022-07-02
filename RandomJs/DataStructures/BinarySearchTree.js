@@ -96,9 +96,14 @@ class BinarySearchTree {
                 case 'topview' :
                     result = this.#topview(result);
                 break;
+                case 'zigzag' :
+                    result = this.zigzagTraversal();
+                break;
                 case 'depthfirst' :
                     this.#depthFirstSearch(this.head, [], result);
+                break;
                 default : break;
+
             }
 
             console.log(`${type}  -->>`, ...result);
@@ -290,9 +295,13 @@ class BinarySearchTree {
         }
     }
 
-    #bottomview() {
+    #bottomview(node, nodeStack, result) {
         try {
-            
+            if(node.left==null && node.right==null) result.push(node.value);
+            nodeStack.push(node);
+            if(node.left) this.#depthFirstSearch(node.left, nodeStack, result);
+            if(node.right) this.#depthFirstSearch(node.right, nodeStack, result);
+            nodeStack.pop(node);
         }catch(error) {
             throw(error)
         }
@@ -320,7 +329,43 @@ class BinarySearchTree {
         }
     }
 
+    zigzagTraversal(root = this.head) {   
+        
+        let q1 = [], q2 = [];
     
+        if(root == null) return [];
+        q1.push(root);
+        let result = [], j = 0;
+        while( q1.length > 0 || q2.length > 0) {
+    
+            result[j] = new Array();
+            
+            if(q1.length > 0) {
+                
+                let i = 0;
+                while(i < q1.length) {
+                    result[j].push(q1[i].value);
+                    if(q1[i].left) q2.push(q1[i].left);
+                    if(q1[i].right) q2.push(q1[i].right);
+                    ++i;
+                }
+                q1 = [];
+            } else if(q2.length > 0) {
+                q2 = q2.reverse();
+                let i = 0;
+                while(i < q2.length) {
+                    (result[j]).push(q2[i].value);
+                    if(q2[i].left) q1.push(q2[i].left);
+                    if(q2[i].right) q1.push(q2[i].right);
+                    ++i;
+                }
+                q2 =  [];
+            }
+            ++j;
+            
+        }
+        return result;
+    }
 }
 
 module.exports = BinarySearchTree

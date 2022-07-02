@@ -19,6 +19,7 @@ class Stack {
         if(this.top !== 0) {
             const value = this.stack[this.top];
             this.stack.splice(-1);
+            delete this.stack[this.top];            
             --this.top;            
             return value;
         }
