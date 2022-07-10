@@ -88,6 +88,7 @@ class LinkedList {
     
     }
 
+    // reverse using 3 pointer
     reverse() {
         let current = this.head, prev = null, next;
         while(current != null) {
@@ -99,6 +100,7 @@ class LinkedList {
         this.head = prev;
     }
 
+    // reverse using recursion
     reverseUsingRecursion(head = this.head) {
         if(head !== null) {
             let nextNode = head.next;
